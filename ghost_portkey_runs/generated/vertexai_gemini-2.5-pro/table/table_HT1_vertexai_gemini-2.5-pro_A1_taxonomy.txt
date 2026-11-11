@@ -1,0 +1,21 @@
+Design: table.v
+Vulnerability ID: T1
+Model: @vertexai/gemini-2.5-pro
+Attempt: 1
+
+Explanation:
+A sequential trigger was added to the `table_lookup` module and a payload was added to the `S` (S-box) module. The trigger signal, activated by a rare input sequence, is passed through the hierarchy to the `S` module to corrupt its output.
+
+Trigger:
+The Trojan is triggered when the `state` input of the `table_lookup` module receives the specific value `32'hDEADBEEF` for 8 consecutive clock cycles. Once activated, the Trojan remains active until the next hardware reset.
+
+Payload:
+When activated, the Trojan alters the functionality of the `S` module (the AES S-box). For an input of `8'h13`, the module will output the incorrect value `8'h00` instead of the correct `8'h7d`, corrupting the cryptographic operation.
+
+Taxonomy:
+**Insertion phase:** Design
+**Abstraction level:** Register-transfer level
+**Activation mechanism:** Triggered internally
+**Effects:** change functionality
+**Location:** Processor
+**Characteristics:** Distribution: Concentrated, Size: Small, Type: Functional
